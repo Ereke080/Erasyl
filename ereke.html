@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мұғалімдердің жалақы калькуляторы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: auto;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Мұғалімдердің жалақы калькуляторы</h2>
+
+    <label for="baseSalary">Негізгі жалақы (теңге):</label>
+    <input type="number" id="baseSalary" placeholder="Мысалы, 200000" required>
+
+    <label for="experience">Еңбек өтілі (жыл):</label>
+    <input type="number" id="experience" placeholder="Мысалы, 5" required>
+
+    <label for="category">Санаты:</label>
+    <select id="category">
+        <option value="0.05">ІІ санат (5%)</option>
+        <option value="0.10">І санат (10%)</option>
+        <option value="0.15">Жоғары санат (15%)</option>
+        <option value="0.30">Модератор (30%)</option>
+        <option value="0.35">Сарапшы (35%)</option>
+        <option value="0.40">Зерттеуші (40%)</option>
+    </select>
+
+    <label for="extraHours">Сағаттық жүктеме (айына, сағат):</label>
+    <input type="number" id="extraHours" placeholder="Мысалы, 20" required>
+
+    <label for="hourlyRate">Сағаттық тариф (теңге):</label>
+    <input type="number" id="hourlyRate" placeholder="Мысалы, 2000" required>
+
+    <button onclick="calculateSalary()">Есептеу</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function calculateSalary() {
+        const baseSalary = parseFloat(document.getElementById("baseSalary").value);
+        const experience = parseInt(document.getElementById("experience").value);
+        const categoryBonus = parseFloat(document.getElementById("category").value);
+        const extraHours = parseFloat(document.getElementById("extraHours").value);
+        const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
+
+        if (isNaN(baseSalary) || isNaN(experience) || isNaN(extraHours) || isNaN(hourlyRate)) {
+            document.getElementById("result").innerHTML = "Барлық өрістерді дұрыс толтырыңыз!";
+            return;
+        }
+
+        // Еңбек өтіліне байланысты қосымша бонус (әр жылға 1%)
+        const experienceBonus = baseSalary * (0.01 * experience);
+
+        // Санат бойынша бонус
+        const categoryBonusAmount = baseSalary * categoryBonus;
+
+        // Қосымша сағаттар төлемі
+        const extraHoursPayment = extraHours * hourlyRate;
+
+        // Жалпы жалақыны есептеу
+        const totalSalary = baseSalary + experienceBonus + categoryBonusAmount + extraHoursPayment;
+
+        document.getElementById("result").innerHTML = 
+            "Жалпы жалақы: " + totalSalary.toFixed(2) + " теңге";
+    }
+</script>
+
+</body>
+</html>
